@@ -1,0 +1,10 @@
+services:
+
+  swarm-app:
+    build:
+      context: ./app
+
+    container_name: swarm-test-app
+
+    ports:
+      - "5050:5000"
