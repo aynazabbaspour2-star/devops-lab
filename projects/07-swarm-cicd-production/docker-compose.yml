@@ -1,0 +1,8 @@
+services:
+
+  app:
+    build:
+      context: ./app
+    image: swarm-production:v1
+    ports:
+      - "5055:5000"
