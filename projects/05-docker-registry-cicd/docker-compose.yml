@@ -1,0 +1,12 @@
+services:
+
+  backend:
+    build:
+      context: ./app
+
+    container_name: registry-backend
+
+    ports:
+      - "5005:5000"
+
+    restart: unless-stopped
