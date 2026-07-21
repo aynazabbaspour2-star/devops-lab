@@ -10,9 +10,9 @@ entryPoints:
     address: ":443"
 
 providers:
-  docker:
+  swarm:
     exposedByDefault: false
-
+    network: traefik-public
   file:
     directory: /dynamic
     watch: true
