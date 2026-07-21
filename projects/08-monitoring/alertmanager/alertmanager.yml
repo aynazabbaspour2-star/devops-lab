@@ -1,0 +1,16 @@
+global:
+
+route:
+  receiver: telegram
+
+receivers:
+  - name: telegram
+    telegram_configs:
+      - bot_token: "8727582221:AAEHs7gzOetgEqeQ3LL1ISS3R-FoiG3aFXo"
+        chat_id: 102457513
+        message: |
+          🚨 Alert: {{ .CommonLabels.alertname }}
+
+          {{ .CommonAnnotations.summary }}
+
+          {{ .CommonAnnotations.description }}

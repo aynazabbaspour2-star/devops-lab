@@ -1,0 +1,13 @@
+groups:
+- name: test-alerts
+  interval: 5s
+
+  rules:
+  - alert: AlwaysFiring
+    expr: vector(1)
+    for: 5s
+    labels:
+      severity: warning
+    annotations:
+      summary: "Test Alert"
+      description: "Hello from Prometheus!"
