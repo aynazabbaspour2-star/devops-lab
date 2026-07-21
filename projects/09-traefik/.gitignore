@@ -6,3 +6,5 @@ acme.json
 .env
 
 *.log
+ssl/
+letsencrypt/
