@@ -1,0 +1,51 @@
+services:
+
+  traefik:
+    image: traefik:v3.6
+    container_name: traefik
+    restart: unless-stopped
+
+    command:
+      - --configFile=/etc/traefik/traefik.yml
+
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8090:8080"
+
+    volumes:
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./dynamic:/dynamic:ro
+      - ./ssl:/ssl:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+  whoami:
+    image: traefik/whoami
+    container_name: whoami
+
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.whoami.rule=Host(`whoami.localhost`)
+      - traefik.http.routers.whoami.entrypoints=websecure
+      - traefik.http.routers.whoami.tls=true
+
+      - traefik.http.services.whoami.loadbalancer.server.port=80
+
+  flask:
+
+    build: ./flask-app
+    container_name: flask
+
+    labels:
+      - traefik.enable=true
+
+      - traefik.http.routers.flask.rule=PathPrefix(`/app`)
+      - traefik.http.routers.flask.entrypoints=websecure
+      - traefik.http.routers.flask.tls=true
+
+      - traefik.http.routers.flask.middlewares=strip-app
+
+      - traefik.http.middlewares.strip-app.stripprefix.prefixes=/app
+
+      - traefik.http.services.flask.loadbalancer.server.port=5000
