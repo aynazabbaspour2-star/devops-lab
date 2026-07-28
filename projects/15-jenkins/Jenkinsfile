@@ -2,22 +2,36 @@ pipeline {
     agent any
 
     stages {
+
         stage('Checkout') {
             steps {
-                echo 'Repository cloned successfully'
+                checkout scm
             }
         }
 
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                sh 'pwd'
-                sh 'ls -la'
+                sh '''
+                docker build -t flask-cicd ./projects/15-jenkins/app
+                '''
             }
         }
 
-        stage('Done') {
+        stage('Run Container') {
             steps {
-                echo 'Pipeline completed successfully!'
+                sh '''
+                docker rm -f flask-cicd || true
+                docker run -d --name flask-cicd -p 5001:5000 flask-cicd
+                '''
+            }
+        }
+
+        stage('Test Application') {
+            steps {
+                sh '''
+                sleep 5
+                curl http://localhost:5001
+                '''
             }
         }
     }
