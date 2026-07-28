@@ -21,7 +21,11 @@ pipeline {
             steps {
                 sh '''
                 docker rm -f flask-cicd || true
-                docker run -d --name flask-cicd -p 5001:5000 flask-cicd
+
+                docker run -d \
+                    --name flask-cicd \
+                    -p 5001:5000 \
+                    flask-cicd
                 '''
             }
         }
@@ -30,9 +34,23 @@ pipeline {
             steps {
                 sh '''
                 sleep 5
-                curl http://localhost:5001
+
+                docker exec flask-cicd python -c "
+import urllib.request
+print(urllib.request.urlopen('http://localhost:5000').read().decode())
+"
                 '''
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed!'
         }
     }
 }

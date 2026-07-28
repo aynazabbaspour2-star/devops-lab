@@ -1,7 +1,6 @@
 services:
-
   jenkins:
-    image: jenkins/jenkins:lts
+    build: .
 
     container_name: jenkins
 
@@ -20,5 +19,4 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
-
   jenkins_home:
