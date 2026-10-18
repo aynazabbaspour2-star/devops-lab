@@ -166,3 +166,27 @@ Conclusion: Docker and the Nginx container recovered successfully after the VM r
 - Remote sudo commands may require a terminal to prompt for a password.
 - Docker manages its own networking rules, so UFW status alone does not establish whether a published container port is reachable.
 - A health check should test the behavior that matters. The current check sends an HTTP request to localhost inside the container.
+
+## DNS and HTTPS Connectivity Tests
+
+**Test date:** 2026-10-18
+**Environment:** Ubuntu Server 22.04.5 LTS VM (`project`)
+**VM IP:** 192.168.1.168
+
+### DNS Configuration
+
+- DNS resolver: `systemd-resolved`.
+- Local DNS stub: `127.0.0.53`.
+- Upstream DNS server on `ens34`: `192.168.1.1`.
+- `dig example.com A +noall +answer` returned `188.114.98.0` and `188.114.99.0`.
+- DNS name resolution succeeded during testing.
+
+### HTTPS Connectivity
+
+- `curl -I --connect-timeout 5 --max-time 10 https://example.com` returned `HTTP/2 200`.
+- A second request using `curl --resolve example.com:443:188.114.99.0` also returned `HTTP/2 200`.
+- The `--resolve` option directed the request to the specified IP while retaining the hostname for HTTPS.
+
+### Conclusion
+
+DNS resolution and HTTPS connectivity to `example.com` succeeded during these tests. This does not guarantee that every DNS server, destination, or network path is working correctly.
