@@ -1,0 +1,18 @@
+image_name = "nginx:latest"
+
+nginx_instances = {
+  primary = {
+    name          = "terraform-nginx"
+    external_port = 8089
+  }
+
+  secondary = {
+    name          = "terraform-nginx-2"
+    external_port = 8090
+  }
+
+  third = {
+    name          = "terraform-nginx-3"
+    external_port = 8091
+  }
+}

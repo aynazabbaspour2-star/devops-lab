@@ -3,12 +3,23 @@ variable "image_name" {
   default = "nginx:latest"
 }
 
-variable "container_name" {
-  type    = string
-  default = "terraform-nginx"
-}
+variable "nginx_instances" {
+  description = "Nginx containers managed by Terraform"
 
-variable "external_port" {
-  type    = number
-  default = 8089
+  type = map(object({
+    name          = string
+    external_port = number
+  }))
+
+  default = {
+    primary = {
+      name          = "terraform-nginx"
+      external_port = 8089
+    }
+
+    secondary = {
+      name          = "terraform-nginx-2"
+      external_port = 8090
+    }
+  }
 }
