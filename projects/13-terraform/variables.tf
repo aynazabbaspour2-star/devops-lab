@@ -10,5 +10,5 @@ variable "container_name" {
 
 variable "external_port" {
   type    = number
-  default = 8088
+  default = 8089
 }
