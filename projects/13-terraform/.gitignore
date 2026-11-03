@@ -13,3 +13,8 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 *.before-*
+
+# Environment-specific Terraform variables
+/dev.tfvars
+/prod.tfvars
+/terraform.tfvars.backup
